@@ -39,7 +39,8 @@ Book book = new Book() {
 IMongoDatabase database = client.GetDatabase("booksdb");
 PrintProperties(database);
 
-//IMongoCollection<BsonDocument> booksColl = database.GetCollection<BsonDocument>("books");
+IMongoCollection<BsonDocument> booksColl = database.GetCollection<BsonDocument>("books");
+PrintProperties(booksColl);
 
 //CRUD.Create(booksColl, book); 
 
