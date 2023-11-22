@@ -13,6 +13,9 @@
 *.sln.docstates
 
 TestConnection/[Oo]bj
+TestConnection/[Bb]in
+mongodata
+
 # Build results
 */[Dd]ebug/
 */[Rr]elease/
