@@ -1,2 +1,6 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using MongoDB.Driver;
+
+var client = new MongoClient("mongodb://localhost:27017");
+
+
+Console.WriteLine(client);
