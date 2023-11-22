@@ -25,7 +25,7 @@ void PrintProperties(object obj, string prefix = "")
     }
 }
 
-MongoClient client = Connection.Connect("mongodb://localhost:27017");
+MongoClient client = Connection.Connect();
 Book book = new Book() {
     BookName = "The C# Programming Language",
     Price = 9.99m,
