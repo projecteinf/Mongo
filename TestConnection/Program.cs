@@ -29,9 +29,6 @@ void PrintProperties(object obj, string prefix = "")
 
 var client = new MongoClient("mongodb://localhost:27017");
 
-Type type = client.GetType();
-PropertyInfo[] properties = type.GetProperties();
-
 PrintProperties(client);
 
 
