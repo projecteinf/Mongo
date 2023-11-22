@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Reflection;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 void PrintProperties(object obj, string prefix = "")
@@ -26,6 +27,8 @@ void PrintProperties(object obj, string prefix = "")
 }
 
 MongoClient client = Connection.Connect();
+// PrintProperties(client);
+
 Book book = new Book() {
     BookName = "The C# Programming Language",
     Price = 9.99m,
@@ -33,8 +36,11 @@ Book book = new Book() {
     Author = "Anders Hejlsberg"
 };
 
-CRUD.Create(client, book);
-PrintProperties(client);
+IMongoDatabase database = client.GetDatabase("booksdb");
+IMongoCollection<BsonDocument> booksColl = database.GetCollection<BsonDocument>("books");
+
+CRUD.Create(booksColl, book); 
+
 
 
 
