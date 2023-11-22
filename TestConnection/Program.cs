@@ -26,7 +26,14 @@ void PrintProperties(object obj, string prefix = "")
 }
 
 MongoClient client = Connection.Connect("mongodb://localhost:27017");
+Book book = new Book() {
+    BookName = "The C# Programming Language",
+    Price = 9.99m,
+    Category = "Programming",
+    Author = "Anders Hejlsberg"
+};
 
+CRUD.Create(client, book);
 PrintProperties(client);
 
 
