@@ -13,6 +13,7 @@ void PrintProperties(object obj, string prefix = "")
             object propValue = property.GetValue(obj, null);
             if (propValue!=null) {
                 Console.WriteLine($"{prefix}{property.Name} = {propValue}");
+                Console.WriteLine();
                 if (property.Name == "Databases") {
                     foreach (var db in (IEnumerable)propValue) {
                         PrintProperties(db, prefix + "  ");
@@ -24,10 +25,7 @@ void PrintProperties(object obj, string prefix = "")
     }
 }
 
-
-
-
-var client = new MongoClient("mongodb://localhost:27017");
+MongoClient client = Connection.Connect("mongodb://localhost:27017");
 
 PrintProperties(client);
 
