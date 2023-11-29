@@ -42,7 +42,7 @@ PrintProperties(database);
 IMongoCollection<BsonDocument> booksColl = database.GetCollection<BsonDocument>("books");
 PrintProperties(booksColl);
 
-//CRUD.Create(booksColl, book); 
+CRUD.Create(booksColl, book); 
 
 
 

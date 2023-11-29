@@ -5,8 +5,8 @@ public class Book
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string? Id { get; set; }
-
+    public string? _id { get ; set; } = MongoDB.Bson.ObjectId.GenerateNewId().ToString();
+ 
     [BsonElement("Name")]
     public string BookName { get; set; } = null!;
 

@@ -6,9 +6,14 @@ public static class Connection
     {
         var mongoClientSettings = new MongoClientSettings
             {
-                Credential = MongoCredential.CreateCredential("booksdb", "root", "a"),
+                /* Credential = MongoCredential.CreateCredential("booksdb", "ubooks", "a"),
+                Server = new MongoServerAddress("localhost", 27017) */
+
+                Credential = MongoCredential.CreateCredential("admin", "root", "a"),
                 Server = new MongoServerAddress("localhost", 27017)
             };
+        mongoClientSettings.AllowInsecureTls = true;
+            
         return new MongoDB.Driver.MongoClient(mongoClientSettings);
     }
     

@@ -25,5 +25,14 @@ admin> db.auth("root","a")
 { ok: 1 }
 admin> 
 
+# Creem usuari per accedir a la base de dades
+
+booksdb> use admin
+switched to db admin
+admin> db.auth("root","a")
+{ ok: 1 }
+
+admin> db.createUser({user: "ubooks", pwd: "a", roles: [ { role: "readWrite", db: "booksdb" } ]})
+
 
 
