@@ -7,5 +7,6 @@ namespace mba.BooksLibrary.Model {
 
         public string BooksCollectionName { get; set; } = null!;
         public string MaterialCollectionName { get; set; } = null!;
+        public string LibraryCollectionName { get; set; } = null!;
     }
 }

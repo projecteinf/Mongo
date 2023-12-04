@@ -2,7 +2,7 @@ using mba.BooksLibrary.Model;
 using mba.BooksLibrary.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookStoreApi.Controllers;
+namespace mba.BooksLibrary.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

@@ -6,11 +6,11 @@ namespace mba.BooksLibrary.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class MaterialController : ControllerBase
+public class LibraryController : ControllerBase
 {
     private readonly MaterialService _materialService;
 
-    public MaterialController(MaterialService materialService) =>
+    public LibraryController(MaterialService materialService) =>
         _materialService = materialService;
 
     [HttpGet]
