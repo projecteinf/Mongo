@@ -8,49 +8,49 @@ namespace mba.BooksLibrary.Controllers;
 [Route("api/[controller]")]
 public class LibraryController : ControllerBase
 {
-    private readonly MaterialService _materialService;
+    private readonly LibraryService _libraryService;
 
-    public LibraryController(MaterialService materialService) =>
-        _materialService = materialService;
+    public LibraryController(LibraryService LibraryService) =>
+        _libraryService = LibraryService;
 
     [HttpGet]
-    public async Task<List<Material>> Get() =>
-        await _materialService.GetAsync();
+    public async Task<List<Library>> Get() =>
+        await _libraryService.GetAsync();
 
     [HttpGet("{id:length(24)}")]
-    public async Task<ActionResult<Material>> Get(string id)
+    public async Task<ActionResult<Library>> Get(string id)
     {
-        var material = await _materialService.GetAsync(id);
+        var library = await _libraryService.GetAsync(id);
 
-        if (material is null)
+        if (library is null)
         {
             return NotFound();
         }
 
-        return material;
+        return library;
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(Material newMaterial)
+    public async Task<IActionResult> Post(Library newMaterial)
     {
-        await _materialService.CreateAsync(newMaterial);
+        await _libraryService.CreateAsync(newMaterial);
 
         return CreatedAtAction(nameof(Get), new { id = newMaterial.Id }, newMaterial);
     }
 
     [HttpPut("{id:length(24)}")]
-    public async Task<IActionResult> Update(string id, Material updatedMaterial)
+    public async Task<IActionResult> Update(string id, Library updatedMaterial)
     {
-        var material = await _materialService.GetAsync(id);
+        var library = await _libraryService.GetAsync(id);
 
-        if (material is null)
+        if (library is null)
         {
             return NotFound();
         }
 
-        updatedMaterial.Id = material.Id;
+        updatedMaterial.Id = library.Id;
 
-        await _materialService.UpdateAsync(id, updatedMaterial);
+        await _libraryService.UpdateAsync(id, updatedMaterial);
 
         return NoContent();
     }
@@ -58,14 +58,14 @@ public class LibraryController : ControllerBase
     [HttpDelete("{id:length(24)}")]
     public async Task<IActionResult> Delete(string id)
     {
-        var material = await _materialService.GetAsync(id);
+        var library = await _libraryService.GetAsync(id);
 
-        if (material is null)
+        if (library is null)
         {
             return NotFound();
         }
 
-        await _materialService.RemoveAsync(id);
+        await _libraryService.RemoveAsync(id);
 
         return NoContent();
     }
