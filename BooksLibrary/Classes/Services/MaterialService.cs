@@ -48,4 +48,21 @@ public class MaterialService
         material.prestecs = prestecs;
         await UpdateAsync(id, material);
     }
+
+    public async Task<List<Material>> NotReturnedAsync()
+    {
+        List<Material> materials = await GetAsync();
+        List<Material> notReturned = new List<Material>();
+
+        return materials.Where(x => x.prestecs is not null).Where(x => x.prestecs.Any(x => x.ReturnedDate is null)).ToList();
+    }
+
+    public async Task ReturnMaterialAsync(string id, string userId)
+    {
+        Material material = await GetAsync(id) ?? throw new Exception("No existeix el llibre");
+        List<Prestecs> prestecs = material.prestecs.ToList();
+        Prestecs prestec = prestecs.Where(x => x.UserId == userId).FirstOrDefault();
+        prestec.ReturnedDate = DateTime.Now;
+        await UpdateAsync(id, material);
+    }
 }
