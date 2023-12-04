@@ -10,6 +10,7 @@ namespace mba.BooksLibrary.Model {
 
         [BsonElement("Name")]
         public string Name { get; set; } = null!;
+        public User[] Users { get; set; } = null!;
         
     }
 }

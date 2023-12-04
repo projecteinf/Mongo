@@ -35,4 +35,17 @@ public class MaterialService
 
     public async Task RemoveAsync(string id) =>
         await _materialCollection.DeleteOneAsync(x => x.Id == id);
+
+    public async Task AfegirPrestecAsync(string id, Prestecs prestec)
+    {
+        Material material = await GetAsync(id) ?? throw new Exception("No existeix el llibre");
+        List<Prestecs> prestecs;
+
+        if (material.prestecs is null) prestecs = new List<Prestecs>();
+        else prestecs = material.prestecs.ToList();
+        
+        prestecs.Add(prestec);
+        material.prestecs = prestecs;
+        await UpdateAsync(id, material);
+    }
 }

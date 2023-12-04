@@ -55,6 +55,19 @@ public class MaterialController : ControllerBase
         return NoContent();
     }
 
+    [HttpPut("{id:length(24)}/prestec")]
+    public async Task<IActionResult> AfegirPrestec(string id, Prestecs prestec)
+    {
+        var material = await _materialService.GetAsync(id);
+
+        if (material is null) return NotFound();
+
+        await _materialService.AfegirPrestecAsync(id, prestec);
+
+        return NoContent();
+    }
+
+
     [HttpDelete("{id:length(24)}")]
     public async Task<IActionResult> Delete(string id)
     {

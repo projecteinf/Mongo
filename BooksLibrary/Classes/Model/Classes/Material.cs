@@ -12,5 +12,6 @@ namespace mba.BooksLibrary.Model {
         public string Name { get; set; } = null!;
         [BsonElement("Type")]
         public string Type { get; set; } = null!;
+        public List<Prestecs>? prestecs { get; set; } = null!;
     }
 }
