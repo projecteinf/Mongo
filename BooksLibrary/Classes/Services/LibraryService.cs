@@ -35,4 +35,16 @@ public class LibraryService
 
     public async Task RemoveAsync(string id) =>
         await _libraryCollection.DeleteOneAsync(x => x.Id == id);
+
+    public async Task AddUserAsync(string id, User user) {
+        Library library = await GetAsync(id) ?? throw new Exception("No existeix la biblioteca");
+        List<User> users;
+
+        if (library.Users is null) users = new List<User>();
+        else users = library.Users.ToList();
+        
+        users.Add(user);
+        library.Users = users;
+        await UpdateAsync(id, library);
+    }
 }

@@ -31,15 +31,15 @@ public class LibraryController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(Library newMaterial)
+    public async Task<IActionResult> Post(Library newLibrary)
     {
-        await _libraryService.CreateAsync(newMaterial);
+        await _libraryService.CreateAsync(newLibrary);
 
-        return CreatedAtAction(nameof(Get), new { id = newMaterial.Id }, newMaterial);
+        return CreatedAtAction(nameof(Get), new { id = newLibrary.Id }, newLibrary);
     }
 
     [HttpPut("{id:length(24)}")]
-    public async Task<IActionResult> Update(string id, Library updatedMaterial)
+    public async Task<IActionResult> Update(string id, Library updatedLibrary)
     {
         var library = await _libraryService.GetAsync(id);
 
@@ -48,9 +48,24 @@ public class LibraryController : ControllerBase
             return NotFound();
         }
 
-        updatedMaterial.Id = library.Id;
+        updatedLibrary.Id = library.Id;
 
-        await _libraryService.UpdateAsync(id, updatedMaterial);
+        await _libraryService.UpdateAsync(id, updatedLibrary);
+
+        return NoContent();
+    }
+
+    [HttpPut("{id:length(24)}/adduser")]
+    public async Task<IActionResult> AddUser(string id, User user)
+    {
+        var library = await _libraryService.GetAsync(id);
+
+        if (library is null)
+        {
+            return NotFound();
+        }
+
+        await _libraryService.AddUserAsync(id, user);
 
         return NoContent();
     }
