@@ -2,6 +2,12 @@ using mba.BooksLibrary;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Configure<mba.BooksLibrary.Model.BooksLibraryDatabaseSettings>(
+    builder.Configuration.GetSection("BooksLibraryDatabase"));
+
+
+builder.Services.AddSingleton<mba.BooksLibrary.Services.BooksService>();
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -18,7 +24,6 @@ if (app.Environment.IsDevelopment())
 }
 
 
-Console.WriteLine(MongoConnection.GetConnection());
 
 app.UseHttpsRedirection();
 
