@@ -7,6 +7,7 @@ builder.Services.Configure<mba.BooksLibrary.Model.BooksLibraryDatabaseSettings>(
 
 
 builder.Services.AddSingleton<mba.BooksLibrary.Services.BooksService>();
+builder.Services.AddSingleton<mba.BooksLibrary.Services.MaterialService>();
 
 // Add services to the container.
 
