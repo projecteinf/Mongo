@@ -21,6 +21,14 @@ public class MaterialController : ControllerBase
     public async Task<List<Material>> GetNotReturned() =>
         await _materialService.NotReturnedAsync();
 
+    // Material not returned by user
+    [HttpGet("notreturned/{id:length(24)}")]
+    public async Task<List<Material>> GetNotReturnedByUser(string id)
+    {
+        return await _materialService.GetNotReturnedByUser(id);;
+    }
+
+
     [HttpGet("{id:length(24)}")]
     public async Task<ActionResult<Material>> Get(string id)
     {
@@ -94,7 +102,6 @@ public class MaterialController : ControllerBase
 
         return NoContent();
     }
-
 
     [HttpDelete("{id:length(24)}")]
     public async Task<IActionResult> Delete(string id)

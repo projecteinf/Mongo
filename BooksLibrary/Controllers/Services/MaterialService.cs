@@ -26,19 +26,14 @@ public class MaterialService
 
     public async Task<List<Material>> GetAsync() =>
         await _materialCollection.Find(_ => true).ToListAsync();
-
     public async Task<Material?> GetAsync(string id) =>
         await _materialCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
-
     public async Task CreateAsync(Material newMaterial) =>
         await _materialCollection.InsertOneAsync(newMaterial);
-
     public async Task UpdateAsync(string id, Material updatedMaterial) =>
         await _materialCollection.ReplaceOneAsync(x => x.Id == id, updatedMaterial);
-
     public async Task RemoveAsync(string id) =>
         await _materialCollection.DeleteOneAsync(x => x.Id == id);
-
     public async Task AfegirPrestecAsync(string id, Prestecs prestec)
     {
         Material material = await GetAsync(id) ?? throw new Exception("No existeix el llibre");
@@ -51,7 +46,6 @@ public class MaterialService
         material.prestecs = prestecs;
         await UpdateAsync(id, material);
     }
-
     public async Task<Material> AssignLibraryAsync(string id, string idLibrary) {
         Material material = await GetAsync(id) ?? throw new Exception("No existeix el llibre"); 
         Library library = await _libraryCollection.Find<Library>(x => x.Id == idLibrary).FirstOrDefaultAsync();
@@ -72,6 +66,13 @@ public class MaterialService
         return materials.Where(x => x.prestecs is not null).Where(x => x.prestecs.Any(x => x.ReturnedDate is null)).ToList();
     }
 
+    public async Task<List<Material>> GetNotReturnedByUser(string id)
+    {
+        List<Material> materials = await GetAsync();
+        
+        return materials.Where(x => x.prestecs is not null).Where(x => x.prestecs.Any(x => x.ReturnedDate is null && x.UserId == id)).ToList();
+    }
+
     public async Task ReturnMaterialAsync(string id, string userId)
     {
         Material material = await GetAsync(id) ?? throw new Exception("No existeix el llibre");
@@ -81,4 +82,5 @@ public class MaterialService
         prestec.ReturnedDate = DateTime.Now;
         await UpdateAsync(id, material);
     }
+
 }
