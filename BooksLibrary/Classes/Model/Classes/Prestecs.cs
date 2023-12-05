@@ -11,5 +11,7 @@ namespace mba.BooksLibrary.Model {
         public DateTime? Date { get; set; } = null!;
         public DateTime? DueDate { get; set; } = null!;
         public DateTime? ReturnedDate { get; set; } = null!;
+
+        public override string ToString() => $"{Id} {LibraryId} {UserId} {Date} {DueDate} {ReturnedDate}";
     }
 }

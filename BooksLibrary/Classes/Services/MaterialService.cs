@@ -61,7 +61,8 @@ public class MaterialService
     {
         Material material = await GetAsync(id) ?? throw new Exception("No existeix el llibre");
         List<Prestecs> prestecs = material.prestecs.ToList();
-        Prestecs prestec = prestecs.Where(x => x.UserId == userId).FirstOrDefault();
+        Prestecs prestec = prestecs.Where(x => x.UserId == userId && x.ReturnedDate is null).FirstOrDefault() ?? throw new Exception("No existeix el prestec");
+        Console.WriteLine(prestec);
         prestec.ReturnedDate = DateTime.Now;
         await UpdateAsync(id, material);
     }

@@ -13,5 +13,7 @@ namespace mba.BooksLibrary.Model {
         [BsonElement("Type")]
         public string Type { get; set; } = null!;
         public List<Prestecs>? prestecs { get; set; } = null!;
+
+        public override string ToString() => $"{Id} {Name} ({Type})";
     }
 }
