@@ -83,6 +83,19 @@ public class MaterialController : ControllerBase
         return NoContent();
     }
 
+    [HttpPut("{id:length(24)}/assigntolibrary/{libraryId:length(24)}")]
+    public async Task<IActionResult> AssignToLibrary(string id, string libraryId)
+    {
+        var material = await _materialService.GetAsync(id);
+
+        if (material is null) return NotFound();
+
+        await _materialService.AssignLibraryAsync(id, libraryId);
+
+        return NoContent();
+    }
+
+
     [HttpDelete("{id:length(24)}")]
     public async Task<IActionResult> Delete(string id)
     {

@@ -7,18 +7,21 @@ namespace mba.BooksLibrary.Services;
 public class MaterialService
 {
     private readonly IMongoCollection<Material> _materialCollection;
-
+    private readonly IMongoCollection<Library> _libraryCollection;
     public MaterialService(
         IOptions<BooksLibraryDatabaseSettings> BooksLibraryDatabaseSettings)
     {
         var mongoClient = new MongoClient(
             BooksLibraryDatabaseSettings.Value.ConnectionString);
-
+        
         var mongoDatabase = mongoClient.GetDatabase(
             BooksLibraryDatabaseSettings.Value.DatabaseName);
 
         _materialCollection = mongoDatabase.GetCollection<Material>(
             BooksLibraryDatabaseSettings.Value.MaterialCollectionName);
+
+        _libraryCollection = mongoDatabase.GetCollection<Library>(
+            BooksLibraryDatabaseSettings.Value.LibraryCollectionName);
     }
 
     public async Task<List<Material>> GetAsync() =>
@@ -49,6 +52,18 @@ public class MaterialService
         await UpdateAsync(id, material);
     }
 
+    public async Task<Material> AssignLibraryAsync(string id, string idLibrary) {
+        Material material = await GetAsync(id) ?? throw new Exception("No existeix el llibre"); 
+        Library library = await _libraryCollection.Find<Library>(x => x.Id == idLibrary).FirstOrDefaultAsync();
+        
+        // No interessa fer-ho d'aquesta forma ja que la llibreria conté tots els socis de la mateixa
+        // Cal fer-ho amb ID de referència a la llibreria per tal que la col·lecció 
+        // de materials no sobrepassi el límit de 16MB
+        
+        material.Library=library;
+        await UpdateAsync(id, material);
+        return material;
+    }
     public async Task<List<Material>> NotReturnedAsync()
     {
         List<Material> materials = await GetAsync();
