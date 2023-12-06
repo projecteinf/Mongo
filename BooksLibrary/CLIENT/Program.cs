@@ -8,12 +8,12 @@ namespace mba.BooksLibrary.Client {
     {
         static async Task Main()
         {
-            await MakeRequest();
+            await GetAllLibraries();
         }
 
-        static async Task MakeRequest()
+        static async Task GetAllLibraries()
         {
-            string apiUrl = "http://localhost:5050/api/v2/Library";
+            string apiUrl = "http://localhost:5050/api/v1/Library";
 
             using (HttpClient client = new HttpClient()) {
                 try {
