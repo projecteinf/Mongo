@@ -1,6 +1,10 @@
+using System.Net;
 using mba.BooksLibrary.Model;
 using mba.BooksLibrary.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace mba.BooksLibrary.Controllers;
 
@@ -33,9 +37,23 @@ public class LibraryController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post(Library newLibrary)
     {
-        await _libraryService.CreateAsync(newLibrary);
-
-        return CreatedAtAction(nameof(Get), new { id = newLibrary.Id }, newLibrary);
+        
+        IActionResult result;
+        try { 
+            await _libraryService.CreateAsync(newLibrary);
+            result = CreatedAtAction(nameof(Get), new { id = newLibrary.Id }, newLibrary);
+        }
+        catch (MongoWriteException ex)
+        {
+            string message = "{Category:"+ ex.WriteError.Category.ToString()+", Code: "+ex.WriteError.Code.ToString()+", Message: \""+ex.WriteError.Message+"\"}";
+            return Conflict(
+                /*
+                    DuplicateKey: A write operation resulted in an error. WriteError: { Category : "DuplicateKey", Code : 11000, Message : "E11000 duplicate key error collection: booksdb.library index: Name_1 dup key: { Name: "Municipal contemporània" }" }.
+                */
+                message
+            );
+        }
+        return result;
     }
 
     [HttpPut("{id:length(24)}")]

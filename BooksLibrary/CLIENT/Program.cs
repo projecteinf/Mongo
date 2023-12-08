@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using mba.BooksLibrary.Client.Exceptions;
 using mba.BooksLibrary.Model;
+using MongoDB.Bson;
 using Newtonsoft.Json;
 
 namespace mba.BooksLibrary.Client {
@@ -31,7 +33,10 @@ namespace mba.BooksLibrary.Client {
                         string result = await response.Content.ReadAsStringAsync();
                         Console.WriteLine("Resposta de l'API: " + result);
                     }
-                    else throw new ApiLibraryException("Error en la petició HTTP. Ruta no vàlida. Codi d'estat: " + response.StatusCode);
+                    else {
+                        string result = await response.Content.ReadAsStringAsync();
+                        throw new ApiLibraryException(result, new Exception(result));
+                    }
                 }
                 catch (HttpRequestException ex)
                 {
