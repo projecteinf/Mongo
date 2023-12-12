@@ -9,7 +9,7 @@ using MongoDB.Driver;
 namespace mba.BooksLibrary.Controllers;
 
 [ApiController]
-[Route("api/v1/[controller]")]
+[Route("api/v1/Libraries")]
 public class LibraryController : ControllerBase
 {
     private readonly LibraryService _libraryService;
