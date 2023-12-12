@@ -35,7 +35,7 @@ namespace mba.BooksLibrary.Client {
                     }
                     else {
                         string result = await response.Content.ReadAsStringAsync();
-                        throw new ApiLibraryException(result, new Exception(result));
+                        throw new ApiLibraryException(result);
                     }
                 }
                 catch (HttpRequestException ex)

@@ -45,7 +45,8 @@ public class LibraryController : ControllerBase
         }
         catch (MongoWriteException ex)
         {
-            string message = "{Category:"+ ex.WriteError.Category.ToString()+", Code: "+ex.WriteError.Code.ToString()+", Message: \""+ex.WriteError.Message+"\"}";
+            //Object resultObject = new { Category = ex.WriteError.Category.ToString(), Code = ex.WriteError.Code.ToString(), Message = ex.WriteError.Message };
+            string message = "{\"Category\":\""+ ex.WriteError.Category.ToString()+"\", \"Code\": \""+ex.WriteError.Code.ToString()+"\", \"Message\": \"Duplicate key\"}";
             return Conflict(
                 /*
                     DuplicateKey: A write operation resulted in an error. WriteError: { Category : "DuplicateKey", Code : 11000, Message : "E11000 duplicate key error collection: booksdb.library index: Name_1 dup key: { Name: "Municipal contemporània" }" }.
