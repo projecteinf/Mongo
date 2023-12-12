@@ -17,9 +17,9 @@ public class LibraryController : ControllerBase
     public LibraryController(LibraryService LibraryService) =>
         _libraryService = LibraryService;
 
-    [HttpGet]
-    public async Task<List<Library>> Get() =>
-        await _libraryService.GetAsync();
+    [HttpGet("start/{start}/limit/{limit}")]
+    public async Task<List<Library>> Get(int start,int limit) =>
+        await _libraryService.GetAsync(start,limit);
 
     [HttpGet("{id:length(24)}")]
     public async Task<ActionResult<Library>> Get(string id)
@@ -37,7 +37,7 @@ public class LibraryController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post(Library newLibrary)
     {
-        
+        // Considerar la possibilitat de comprovar prèviament si existeix el nom de la llibreria i retornar un error 409
         IActionResult result;
         try { 
             await _libraryService.CreateAsync(newLibrary);

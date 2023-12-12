@@ -14,11 +14,14 @@ namespace mba.BooksLibrary.Client {
         const string APIRULLIBRARY = APIRULBASE + "Libraries";
         static async Task Main()
         {
-            Library library = new Library();
-            library.Name = "Gran d'Olot";
             
-            await CreateLibrary(library);
-            await GetAllLibraries();
+            for(int i=1;i<=20;i++) {
+                Library library = new Library();
+                library.Name = "Gran d'Olot - " + i; 
+                await CreateLibrary(library);
+            }
+            
+            await GetAllLibraries(0,9);
         }
 
         static async Task CreateLibrary(Library library)
@@ -34,7 +37,7 @@ namespace mba.BooksLibrary.Client {
 
                 if (response.IsSuccessStatusCode) {
                     string result = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine("Resposta de l'API: " + result);
+                    // S'hauria de comprovar que el resultat és vàlid
                 }
                 else {
                     string result = await response.Content.ReadAsStringAsync();
@@ -43,15 +46,16 @@ namespace mba.BooksLibrary.Client {
                 
             }
         }
-        static async Task GetAllLibraries()
+        static async Task GetAllLibraries(int start, int limit)
         {
             using (HttpClient client = new HttpClient()) {
                 try {
-                    HttpResponseMessage response = await client.GetAsync(APIRULLIBRARY);
+                    HttpResponseMessage response = await client.GetAsync(APIRULLIBRARY + "/start/" + start + "/limit/" + limit);
 
                     if (response.IsSuccessStatusCode) {
                         string content = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine("Resposta de l'API: " + content);
+                        content = content.Replace(",", "\n");
+                        Console.WriteLine(content);
                     }
                     else throw new ApiLibraryException("Error en la petició HTTP. Ruta no vàlida. Codi d'estat: " + response.StatusCode);
                 }

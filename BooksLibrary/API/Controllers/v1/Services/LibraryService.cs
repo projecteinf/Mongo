@@ -7,22 +7,21 @@ namespace mba.BooksLibrary.Services;
 public class LibraryService
 {
     private readonly IMongoCollection<Library> _libraryCollection;
-
     public LibraryService(IOptions<BooksLibraryDatabaseSettings> BooksLibraryDatabaseSettings)
     {
-        var mongoClient = new MongoClient(
+        IMongoClient mongoClient = new MongoClient(
             BooksLibraryDatabaseSettings.Value.ConnectionString);
 
-        var mongoDatabase = mongoClient.GetDatabase(
+        IMongoDatabase _mongoDatabase = mongoClient.GetDatabase(
             BooksLibraryDatabaseSettings.Value.DatabaseName);
 
-        _libraryCollection = mongoDatabase.GetCollection<Library>(
+        _libraryCollection = _mongoDatabase.GetCollection<Library>(
             BooksLibraryDatabaseSettings.Value.LibraryCollectionName);
     }
 
-    public async Task<List<Library>> GetAsync() =>
-        await _libraryCollection.Find(_ => true).ToListAsync();
-
+    public async Task<List<Library>> GetAsync(int start,int limit) =>
+        await _libraryCollection.Find(_ => true).Skip(start).Limit(limit).ToListAsync();
+        
     public async Task<Library?> GetAsync(string id) =>
         await _libraryCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
