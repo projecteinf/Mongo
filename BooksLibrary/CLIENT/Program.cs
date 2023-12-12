@@ -11,7 +11,7 @@ namespace mba.BooksLibrary.Client {
     class Program
     {
         const string APIRULBASE = "http://localhost:5050/api/v1/";
-        const string APIRULLIBRARY = APIRULBASE + "Library";
+        const string APIRULLIBRARY = APIRULBASE + "Libraries";
         static async Task Main()
         {
             Library library = new Library();
@@ -23,29 +23,24 @@ namespace mba.BooksLibrary.Client {
 
         static async Task CreateLibrary(Library library)
         {
-
             using (HttpClient client = new HttpClient()) {
+                HttpResponseMessage response = null;
                 try {
                     StringContent content = new StringContent(JsonConvert.SerializeObject(library), System.Text.Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync(APIRULLIBRARY, content);
+                    response = await client.PostAsync(APIRULLIBRARY, content);
+                } 
+                catch (HttpRequestException ex) { new ApiCallException("Error en la petició HTTP", ex); }
+                catch (Exception ex) { new ApiCallException("Error ", ex); }
 
-                    if (response.IsSuccessStatusCode) {
-                        string result = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine("Resposta de l'API: " + result);
-                    }
-                    else {
-                        string result = await response.Content.ReadAsStringAsync();
-                        new ApiLibraryException(result);
-                    }
+                if (response.IsSuccessStatusCode) {
+                    string result = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine("Resposta de l'API: " + result);
                 }
-                catch (HttpRequestException ex)
-                {
-                    new ApiCallException("Error en la petició HTTP", ex);
+                else {
+                    string result = await response.Content.ReadAsStringAsync();
+                    new ApiLibraryException(result);
                 }
-                catch (Exception ex)
-                {
-                    new ApiCallException("Error ", ex);
-                }
+                
             }
         }
         static async Task GetAllLibraries()
